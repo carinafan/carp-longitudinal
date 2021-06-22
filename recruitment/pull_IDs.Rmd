@@ -16,15 +16,23 @@ library(tidyverse)
 ```
 
 ```{r data}
-df.qualtrics = read_excel("../../online/carp/data/old/2019-01-25-cogniciti-forManuscript.xlsx",
-                          sheet = "qualtrics") %>% 
-  as.data.frame()
+df.id = read_excel("../../online/carp/data/old/2019-01-25-cogniciti-forManuscript.xlsx",
+                   sheet = "qualtrics") %>% 
+  select(subjectID)
 
-df.email = read_excel("../../online/carp/data/old/2019-01-25-cogniciti-subjectID.xlsx")
-
-df = df.email %>% 
+df.email = read_excel("../../online/carp/data/old/2019-01-25-cogniciti-subjectID.xlsx") %>% 
   select(subjectID, email) %>% 
-  filter(subjectID %in% df.qualtrics$subjectID)
+  filter(subjectID %in% df.id$subjectID)
+
+df.date = read.csv("../../online/carp/data/old/2019-01-25-cogniciti-clean.csv") %>% 
+  select(subjectID, recorded_date) %>% 
+  filter(subjectID %in% df.id$subjectID)
+```
+
+```{r}
+df = df.id %>% 
+  full_join(df.email) %>% 
+  full_join(df.date)
 ```
 
 ```{r}
