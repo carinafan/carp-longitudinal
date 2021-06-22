@@ -9,6 +9,7 @@ output:
 This script pulls the original IDs and emails from the original study.
 
 ```{r packages}
+library(lubridate)
 library(readxl)
 library(writexl)
 library(magrittr)
@@ -33,6 +34,10 @@ df.date = read.csv("../../online/carp/data/old/2019-01-25-cogniciti-clean.csv") 
 df = df.id %>% 
   full_join(df.email) %>% 
   full_join(df.date)
+
+df$recorded_date %<>% 
+  as_date() %>% 
+  year()
 ```
 
 ```{r}
