@@ -1,0 +1,43 @@
+---
+title: "CARP longitudinal - pull subject IDs for recruitment"
+date: "Last updated: `r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  github_document:
+    toc: true
+---
+
+This script pulls the original IDs and emails from the original study.
+
+```{r packages}
+library(readxl)
+library(writexl)
+library(magrittr)
+library(tidyverse)
+```
+
+```{r data}
+df.qualtrics = read_excel("../../online/carp/data/old/2019-01-25-cogniciti-forManuscript.xlsx",
+                          sheet = "qualtrics") %>% 
+  as.data.frame()
+
+df.email = read_excel("../../online/carp/data/old/2019-01-25-cogniciti-subjectID.xlsx")
+
+df = df.email %>% 
+  select(subjectID, email) %>% 
+  filter(subjectID %in% df.qualtrics$subjectID)
+```
+
+```{r}
+df %>% 
+  write_xlsx("IDs.xlsx")
+```
+
+
+<!-- ======================================================================= -->
+
+
+# Session info
+
+```{r session_info, include = TRUE}
+sessionInfo()
+```
