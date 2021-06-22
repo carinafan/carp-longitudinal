@@ -7,3 +7,5 @@
 /notes
 
 # file types
+*.docx
+*.xlsx
